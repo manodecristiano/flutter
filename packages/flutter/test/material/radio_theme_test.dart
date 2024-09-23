@@ -7,12 +7,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../rendering/mock_canvas.dart';
-
 void main() {
   test('RadioThemeData copyWith, ==, hashCode basics', () {
     expect(const RadioThemeData(), const RadioThemeData().copyWith());
     expect(const RadioThemeData().hashCode, const RadioThemeData().copyWith().hashCode);
+  });
+
+  test('RadioThemeData lerp special cases', () {
+    expect(RadioThemeData.lerp(null, null, 0), const RadioThemeData());
+    const RadioThemeData data = RadioThemeData();
+    expect(identical(RadioThemeData.lerp(data, data, 0.5), data), true);
   });
 
   test('RadioThemeData defaults', () {
@@ -61,12 +65,17 @@ void main() {
       .map((DiagnosticsNode node) => node.toString())
       .toList();
 
-    expect(description[0], 'mouseCursor: MaterialStatePropertyAll(SystemMouseCursor(click))');
-    expect(description[1], 'fillColor: MaterialStatePropertyAll(Color(0xfffffff0))');
-    expect(description[2], 'overlayColor: MaterialStatePropertyAll(Color(0xfffffff1))');
-    expect(description[3], 'splashRadius: 1.0');
-    expect(description[4], 'materialTapTargetSize: MaterialTapTargetSize.shrinkWrap');
-    expect(description[5], equalsIgnoringHashCodes('visualDensity: VisualDensity#00000(h: 0.0, v: 0.0)'));
+    expect(
+      description,
+      equalsIgnoringHashCodes(<String>[
+        'mouseCursor: WidgetStatePropertyAll(SystemMouseCursor(click))',
+        'fillColor: WidgetStatePropertyAll(Color(0xfffffff0))',
+        'overlayColor: WidgetStatePropertyAll(Color(0xfffffff1))',
+        'splashRadius: 1.0',
+        'materialTapTargetSize: MaterialTapTargetSize.shrinkWrap',
+        'visualDensity: VisualDensity#00000(h: 0.0, v: 0.0)',
+      ]),
+    );
   });
 
   testWidgets('Radio is themeable', (WidgetTester tester) async {

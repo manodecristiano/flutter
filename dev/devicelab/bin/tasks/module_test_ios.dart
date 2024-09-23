@@ -27,8 +27,13 @@ Future<void> main() async {
       },
     );
 
+<<<<<<< HEAD
     // this variable cannot be `late`, as we reference it in the `finally` block
     // which may execute before this field has been initialized
+=======
+    // This variable cannot be `late`, as we reference it in the `finally` block
+    // which may execute before this field has been initialized.
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
     String? simulatorDeviceId;
     section('Create Flutter module project');
 
@@ -51,13 +56,43 @@ Future<void> main() async {
       final Directory flutterModuleLibSource = Directory(path.join(flutterDirectory.path, 'dev', 'integration_tests', 'ios_host_app', 'flutterapp', 'lib'));
       final Directory flutterModuleLibDestination = Directory(path.join(projectDir.path, 'lib'));
 
-      // These test files don't have a .dart prefix so the analyzer will ignore them. They aren't in a
+      // These test files don't have a .dart extension so the analyzer will ignore them. They aren't in a
       // package and don't work on their own outside of the test module just created.
       final File main = File(path.join(flutterModuleLibSource.path, 'main'));
       main.copySync(path.join(flutterModuleLibDestination.path, 'main.dart'));
 
       final File marquee = File(path.join(flutterModuleLibSource.path, 'marquee'));
       marquee.copySync(path.join(flutterModuleLibDestination.path, 'marquee.dart'));
+
+      section('Create package with native assets');
+
+      await flutter(
+        'config',
+        options: <String>['--enable-native-assets'],
+      );
+
+      const String ffiPackageName = 'ffi_package';
+      await createFfiPackage(ffiPackageName, tempDir);
+
+      section('Add FFI package');
+
+      final File pubspec = File(path.join(projectDir.path, 'pubspec.yaml'));
+      String content = await pubspec.readAsString();
+      content = content.replaceFirst(
+        'dependencies:\n',
+        '''
+dependencies:
+  $ffiPackageName:
+    path: ../$ffiPackageName
+''',
+      );
+      await pubspec.writeAsString(content, flush: true);
+      await inDirectory(projectDir, () async {
+        await flutter(
+          'packages',
+          options: <String>['get'],
+        );
+      });
 
       section('Build ephemeral host app in release mode without CocoaPods');
 
@@ -162,15 +197,21 @@ Future<void> main() async {
 
       section('Add plugins');
 
-      final File pubspec = File(path.join(projectDir.path, 'pubspec.yaml'));
-      String content = await pubspec.readAsString();
       content = content.replaceFirst(
+<<<<<<< HEAD
         '\ndependencies:\n',
+=======
+        'dependencies:\n',
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
         // One framework, one Dart-only, one that does not support iOS, and one with a resource bundle.
         '''
 dependencies:
   url_launcher: 6.0.20
+<<<<<<< HEAD
   android_alarm_manager: 0.4.5+11
+=======
+  android_alarm_manager: 2.0.2
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
   google_sign_in_ios: 5.5.0
   $dartPluginName:
     path: ../$dartPluginName
@@ -220,6 +261,9 @@ dependencies:
 
       // Dart-only, no embedded framework.
       checkDirectoryNotExists(path.join(ephemeralIOSHostApp.path, 'Frameworks', '$dartPluginName.framework'));
+
+      // Native assets embedded, no embedded framework.
+      checkFileExists(path.join(ephemeralIOSHostApp.path, 'Frameworks', '$ffiPackageName.framework', ffiPackageName));
 
       section('Clean and pub get module');
 
@@ -279,8 +323,38 @@ end
           },
         );
 
-        final File hostPodfileLockFile = File(path.join(objectiveCHostApp.path, 'Podfile.lock'));
-        final String hostPodfileLockOutput = hostPodfileLockFile.readAsStringSync();
+        File hostPodfileLockFile = File(path.join(objectiveCHostApp.path, 'Podfile.lock'));
+        String hostPodfileLockOutput = hostPodfileLockFile.readAsStringSync();
+        if (!hostPodfileLockOutput.contains(':path: "../hello/.ios/Flutter"')
+            || !hostPodfileLockOutput.contains(':path: "../hello/.ios/Flutter/FlutterPluginRegistrant"')
+            || !hostPodfileLockOutput.contains(':path: "../hello/.ios/.symlinks/plugins/url_launcher_ios/ios"')
+            || hostPodfileLockOutput.contains('android_alarm_manager')
+            || hostPodfileLockOutput.contains(dartPluginName)) {
+          print(hostPodfileLockOutput);
+          throw TaskResult.failure('Building host app Podfile.lock does not contain expected pods');
+        }
+
+        section('Validate install_flutter_[engine_pod|plugin_pods|application_pod] methods in the Podfile can be executed normally');
+
+        podfileContent = podfileContent.replaceFirst('''
+  install_all_flutter_pods flutter_application_path
+''', '''
+  install_flutter_engine_pod(flutter_application_path)
+  install_flutter_plugin_pods(flutter_application_path)
+  install_flutter_application_pod(flutter_application_path)
+''');
+        await podfile.writeAsString(podfileContent, flush: true);
+
+        await exec(
+          'pod',
+          <String>['install'],
+          environment: <String, String>{
+            'LANG': 'en_US.UTF-8',
+          },
+        );
+
+        hostPodfileLockFile = File(path.join(objectiveCHostApp.path, 'Podfile.lock'));
+        hostPodfileLockOutput = hostPodfileLockFile.readAsStringSync();
         if (!hostPodfileLockOutput.contains(':path: "../hello/.ios/Flutter"')
             || !hostPodfileLockOutput.contains(':path: "../hello/.ios/Flutter/FlutterPluginRegistrant"')
             || !hostPodfileLockOutput.contains(':path: "../hello/.ios/.symlinks/plugins/url_launcher_ios/ios"')
@@ -348,6 +422,12 @@ end
         'App.framework',
         'flutter_assets',
         'isolate_snapshot_data',
+      ));
+
+      checkFileExists(path.join(
+        hostFrameworksDirectory,
+        '$ffiPackageName.framework',
+        ffiPackageName,
       ));
 
       section('Check the NOTICE file is correct');
@@ -437,7 +517,6 @@ end
         if ((await fileType(builtFlutterBinary)).contains('armv7')) {
           throw TaskResult.failure('Unexpected armv7 architecture slice in $builtFlutterBinary');
         }
-        await checkContainsBitcode(builtFlutterBinary);
 
         final String builtAppBinary = path.join(
           archivedAppPath,
@@ -449,7 +528,14 @@ end
         if ((await fileType(builtAppBinary)).contains('armv7')) {
           throw TaskResult.failure('Unexpected armv7 architecture slice in $builtAppBinary');
         }
-        await checkContainsBitcode(builtAppBinary);
+
+        // Check native assets are bundled.
+        checkFileExists(path.join(
+          archivedAppPath,
+          'Frameworks',
+          '$ffiPackageName.framework',
+          ffiPackageName,
+        ));
 
         // The host app example builds plugins statically, url_launcher_ios.framework
         // should not exist.
@@ -457,6 +543,16 @@ end
           archivedAppPath,
           'Frameworks',
           'url_launcher_ios.framework',
+        ));
+
+        checkFileExists(path.join(
+          '${objectiveCBuildArchiveDirectory.path}.xcarchive',
+          'dSYMs',
+          'App.framework.dSYM',
+          'Contents',
+          'Resources',
+          'DWARF',
+          'App'
         ));
       });
 
@@ -481,10 +577,6 @@ end
             '-resultBundlePath',
             resultBundlePath,
             'test',
-            'CODE_SIGNING_ALLOWED=NO',
-            'CODE_SIGNING_REQUIRED=NO',
-            'CODE_SIGN_IDENTITY=-',
-            'EXPANDED_CODE_SIGN_IDENTITY=-',
             'COMPILER_INDEX_STORE_ENABLE=NO',
           ],
           workingDirectory: objectiveCHostApp.path,
@@ -503,6 +595,7 @@ end
                 <String>[
                   '-r',
                   '-9',
+                  '-q',
                   zipPath,
                   'result.xcresult',
                 ],
@@ -539,8 +632,7 @@ end
       );
 
       if (!xcodebuildOutput.contains('flutter --verbose --local-engine-src-path=bogus assemble') || // Verbose output
-          !xcodebuildOutput.contains('Unable to detect a Flutter engine build directory in bogus') ||
-          !xcodebuildOutput.contains('Command PhaseScriptExecution failed with a nonzero exit code')) {
+          !xcodebuildOutput.contains('Unable to detect a Flutter engine build directory in bogus')) {
         return TaskResult.failure('Host Objective-C app build succeeded though flutter script failed');
       }
 
@@ -610,7 +702,7 @@ end
     } catch (e) {
       return TaskResult.failure(e.toString());
     } finally {
-      unawaited(removeIOSimulator(simulatorDeviceId));
+      unawaited(removeIOSSimulator(simulatorDeviceId));
       rmTree(tempDir);
     }
   });

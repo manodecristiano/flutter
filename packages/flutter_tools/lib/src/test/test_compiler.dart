@@ -15,7 +15,9 @@ import '../bundle.dart';
 import '../compile.dart';
 import '../flutter_plugins.dart';
 import '../globals.dart' as globals;
+import '../native_assets.dart';
 import '../project.dart';
+import 'test_time_recorder.dart';
 
 /// A request to the [TestCompiler] for recompilation.
 class CompilationRequest {
@@ -40,11 +42,15 @@ class TestCompiler {
   ///
   /// If [precompiledDillPath] is passed, it will be used to initialize the
   /// compiler.
+  ///
+  /// If [testTimeRecorder] is passed, times will be recorded in it.
   TestCompiler(
     this.buildInfo,
-    this.flutterProject,
-    { String? precompiledDillPath }
-  ) : testFilePath = precompiledDillPath ?? globals.fs.path.join(
+    this.flutterProject, {
+    String? precompiledDillPath,
+    this.testTimeRecorder,
+    TestCompilerNativeAssetsBuilder? nativeAssetsBuilder,
+  }) : testFilePath = precompiledDillPath ?? globals.fs.path.join(
         flutterProject!.directory.path,
         getBuildDirectory(),
         'test_cache',
@@ -53,7 +59,8 @@ class TestCompiler {
           dartDefines: buildInfo.dartDefines,
           extraFrontEndOptions: buildInfo.extraFrontEndOptions,
         )),
-       shouldCopyDillFile = precompiledDillPath == null {
+       shouldCopyDillFile = precompiledDillPath == null,
+       _nativeAssetsBuilder = nativeAssetsBuilder {
     // Compiler maintains and updates single incremental dill file.
     // Incremental compilation requests done for each test copy that file away
     // for independent execution.
@@ -73,6 +80,8 @@ class TestCompiler {
   final BuildInfo buildInfo;
   final String testFilePath;
   final bool shouldCopyDillFile;
+  final TestTimeRecorder? testTimeRecorder;
+  final TestCompilerNativeAssetsBuilder? _nativeAssetsBuilder;
 
 
   ResidentCompiler? compiler;
@@ -112,9 +121,9 @@ class TestCompiler {
       buildMode: buildInfo.mode,
       trackWidgetCreation: buildInfo.trackWidgetCreation,
       initializeFromDill: testFilePath,
-      unsafePackageSerialization: false,
       dartDefines: buildInfo.dartDefines,
-      packagesPath: buildInfo.packagesPath,
+      packagesPath: buildInfo.packageConfigPath,
+      frontendServerStarterPath: buildInfo.frontendServerStarterPath,
       extraFrontEndOptions: buildInfo.extraFrontEndOptions,
       platform: globals.platform,
       testCompilation: true,
@@ -139,6 +148,7 @@ class TestCompiler {
       final CompilationRequest request = compilationQueue.first;
       globals.printTrace('Compiling ${request.mainUri}');
       final Stopwatch compilerTime = Stopwatch()..start();
+      final Stopwatch? testTimeRecorderStopwatch = testTimeRecorder?.start(TestTimePhases.Compile);
       bool firstCompile = false;
       if (compiler == null) {
         compiler = await createCompiler();
@@ -159,6 +169,8 @@ class TestCompiler {
         invalidatedRegistrantFiles.add(flutterProject!.dartPluginRegistrant.absolute.uri);
       }
 
+      final Uri? nativeAssetsYaml = await _nativeAssetsBuilder?.build(buildInfo);
+
       final CompilerOutput? compilerOutput = await compiler!.recompile(
         request.mainUri,
         <Uri>[request.mainUri, ...invalidatedRegistrantFiles],
@@ -167,6 +179,7 @@ class TestCompiler {
         projectRootPath: flutterProject?.directory.absolute.path,
         checkDartPluginRegistry: true,
         fs: globals.fs,
+        nativeAssetsYaml: nativeAssetsYaml,
       );
       final String? outputPath = compilerOutput?.outputFilename;
 
@@ -200,6 +213,7 @@ class TestCompiler {
         compiler!.reset();
       }
       globals.printTrace('Compiling ${request.mainUri} took ${compilerTime.elapsedMilliseconds}ms');
+      testTimeRecorder?.stop(TestTimePhases.Compile, testTimeRecorderStopwatch!);
       // Only remove now when we finished processing the element
       compilationQueue.removeAt(0);
     }

@@ -2,6 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+/// @docImport 'hardware_keyboard.dart';
+library;
+
 import 'package:flutter/foundation.dart';
 
 import 'keyboard_maps.g.dart';
@@ -10,35 +13,11 @@ import 'raw_keyboard.dart';
 export 'package:flutter/foundation.dart' show DiagnosticPropertiesBuilder;
 
 export 'keyboard_key.g.dart' show LogicalKeyboardKey, PhysicalKeyboardKey;
-export 'raw_keyboard.dart' show KeyboardSide, ModifierKey;
 
-/// Maps iOS specific string values of nonvisible keys to logical keys
-///
-/// See: https://developer.apple.com/documentation/uikit/uikeycommand/input_strings_for_special_keys?language=objc
-const Map<String, LogicalKeyboardKey> _kIosToLogicalMap = <String, LogicalKeyboardKey>{
-  'UIKeyInputEscape': LogicalKeyboardKey.escape,
-  'UIKeyInputF1': LogicalKeyboardKey.f1,
-  'UIKeyInputF2': LogicalKeyboardKey.f2,
-  'UIKeyInputF3': LogicalKeyboardKey.f3,
-  'UIKeyInputF4': LogicalKeyboardKey.f4,
-  'UIKeyInputF5': LogicalKeyboardKey.f5,
-  'UIKeyInputF6': LogicalKeyboardKey.f6,
-  'UIKeyInputF7': LogicalKeyboardKey.f7,
-  'UIKeyInputF8': LogicalKeyboardKey.f8,
-  'UIKeyInputF9': LogicalKeyboardKey.f9,
-  'UIKeyInputF10': LogicalKeyboardKey.f10,
-  'UIKeyInputF11': LogicalKeyboardKey.f11,
-  'UIKeyInputF12': LogicalKeyboardKey.f12,
-  'UIKeyInputUpArrow': LogicalKeyboardKey.arrowUp,
-  'UIKeyInputDownArrow': LogicalKeyboardKey.arrowDown,
-  'UIKeyInputLeftArrow': LogicalKeyboardKey.arrowLeft,
-  'UIKeyInputRightArrow': LogicalKeyboardKey.arrowRight,
-  'UIKeyInputHome': LogicalKeyboardKey.home,
-  'UIKeyInputEnd': LogicalKeyboardKey.enter,
-  'UIKeyInputPageUp': LogicalKeyboardKey.pageUp,
-  'UIKeyInputPageDown': LogicalKeyboardKey.pageDown,
-};
 /// Platform-specific key event data for iOS.
+///
+/// This class is deprecated and will be removed. Platform specific key event
+/// data will no longer be available. See [KeyEvent] for what is available.
 ///
 /// This object contains information about key events obtained from iOS'
 /// `UIKey` interface.
@@ -46,20 +25,22 @@ const Map<String, LogicalKeyboardKey> _kIosToLogicalMap = <String, LogicalKeyboa
 /// See also:
 ///
 ///  * [RawKeyboard], which uses this interface to expose key data.
+@Deprecated(
+  'Platform specific key event data is no longer available. See KeyEvent for what is available. '
+  'This feature was deprecated after v3.18.0-2.0.pre.',
+)
 class RawKeyEventDataIos extends RawKeyEventData {
   /// Creates a key event data structure specific for iOS.
-  ///
-  /// The [characters], [charactersIgnoringModifiers], and [modifiers], arguments
-  /// must not be null.
+  @Deprecated(
+    'Platform specific key event data is no longer available. See KeyEvent for what is available. '
+    'This feature was deprecated after v3.18.0-2.0.pre.',
+  )
   const RawKeyEventDataIos({
     this.characters = '',
     this.charactersIgnoringModifiers = '',
     this.keyCode = 0,
     this.modifiers = 0,
-  }) : assert(characters != null),
-       assert(charactersIgnoringModifiers != null),
-       assert(keyCode != null),
-       assert(modifiers != null);
+  });
 
   /// The Unicode characters associated with a key-up or key-down event.
   ///
@@ -107,9 +88,9 @@ class RawKeyEventDataIos extends RawKeyEventData {
     }
 
     // Look to see if the [keyLabel] is one we know about and have a mapping for.
-    final LogicalKeyboardKey? newKey = _kIosToLogicalMap[keyLabel];
-    if (newKey != null) {
-      return newKey;
+    final LogicalKeyboardKey? specialKey = kIosSpecialLogicalMap[keyLabel];
+    if (specialKey != null) {
+      return specialKey;
     }
 
     // Keys that can't be derived with characterIgnoringModifiers will be
@@ -167,21 +148,19 @@ class RawKeyEventDataIos extends RawKeyEventData {
     if (modifiers & anyMask == 0) {
       return false;
     }
-    // If only the "anyMask" bit is set, then we respond true for requests of
-    // whether either left or right is pressed. Handles the case where iOS
-    // supplies just the "either" modifier flag, but not the left/right flag.
-    // (e.g. modifierShift but not modifierLeftShift).
-    final bool anyOnly = modifiers & (leftMask | rightMask | anyMask) == anyMask;
-    switch (side) {
-      case KeyboardSide.any:
-        return true;
-      case KeyboardSide.all:
-        return modifiers & leftMask != 0 && modifiers & rightMask != 0 || anyOnly;
-      case KeyboardSide.left:
-        return modifiers & leftMask != 0 || anyOnly;
-      case KeyboardSide.right:
-        return modifiers & rightMask != 0 || anyOnly;
+    if (modifiers & (leftMask | rightMask | anyMask) == anyMask) {
+      // If only the "anyMask" bit is set, then we respond true for requests of
+      // whether either left or right is pressed. Handles the case where iOS
+      // supplies just the "either" modifier flag, but not the left/right flag.
+      // (e.g. modifierShift but not modifierLeftShift).
+      return true;
     }
+    return switch (side) {
+      KeyboardSide.any   => true,
+      KeyboardSide.all   => modifiers & leftMask != 0 && modifiers & rightMask != 0,
+      KeyboardSide.left  => modifiers & leftMask != 0,
+      KeyboardSide.right => modifiers & rightMask != 0,
+    };
   }
 
   @override
@@ -191,19 +170,14 @@ class RawKeyEventDataIos extends RawKeyEventData {
     switch (key) {
       case ModifierKey.controlModifier:
         result = _isLeftRightModifierPressed(side, independentModifier & modifierControl, modifierLeftControl, modifierRightControl);
-        break;
       case ModifierKey.shiftModifier:
         result = _isLeftRightModifierPressed(side, independentModifier & modifierShift, modifierLeftShift, modifierRightShift);
-        break;
       case ModifierKey.altModifier:
         result = _isLeftRightModifierPressed(side, independentModifier & modifierOption, modifierLeftOption, modifierRightOption);
-        break;
       case ModifierKey.metaModifier:
         result = _isLeftRightModifierPressed(side, independentModifier & modifierCommand, modifierLeftCommand, modifierRightCommand);
-        break;
       case ModifierKey.capsLockModifier:
         result = independentModifier & modifierCapsLock != 0;
-        break;
     // On iOS, the function modifier bit is set for any function key, like F1,
     // F2, etc., but the meaning of ModifierKey.modifierFunction in Flutter is
     // that of the Fn modifier key, so there's no good way to emulate that on
@@ -214,7 +188,6 @@ class RawKeyEventDataIos extends RawKeyEventData {
       case ModifierKey.scrollLockModifier:
         // These modifier masks are not used in iOS keyboards.
         result = false;
-        break;
     }
     assert(!result || getModifierSide(key) != null, "$runtimeType thinks that a modifier is pressed, but can't figure out what side it's on.");
     return result;

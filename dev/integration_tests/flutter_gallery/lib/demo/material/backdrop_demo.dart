@@ -130,7 +130,7 @@ class CategoryView extends StatelessWidget {
                         alignment: AlignmentDirectional.center,
                         child: Text(
                           asset,
-                          style: theme.textTheme.caption,
+                          style: theme.textTheme.bodySmall,
                         ),
                       ),
                     ],
@@ -186,7 +186,7 @@ class BackdropPanel extends StatelessWidget {
               padding: const EdgeInsetsDirectional.only(start: 16.0),
               alignment: AlignmentDirectional.centerStart,
               child: DefaultTextStyle(
-                style: theme.textTheme.subtitle1!,
+                style: theme.textTheme.titleMedium!,
                 child: Tooltip(
                   message: 'Tap to dismiss',
                   child: title,
@@ -213,7 +213,7 @@ class BackdropTitle extends AnimatedWidget {
   Widget build(BuildContext context) {
     final Animation<double> animation = listenable as Animation<double>;
     return DefaultTextStyle(
-      style: Theme.of(context).primaryTextTheme.headline6!,
+      style: Theme.of(context).primaryTextTheme.titleLarge!,
       softWrap: false,
       overflow: TextOverflow.ellipsis,
       child: Stack(
@@ -276,13 +276,8 @@ class _BackdropDemoState extends State<BackdropDemo> with SingleTickerProviderSt
     });
   }
 
-  bool get _backdropPanelVisible {
-    final AnimationStatus status = _controller.status;
-    return status == AnimationStatus.completed || status == AnimationStatus.forward;
-  }
-
   void _toggleBackdropPanelVisibility() {
-    _controller.fling(velocity: _backdropPanelVisible ? -2.0 : 2.0);
+    _controller.fling(velocity: _controller.isForwardOrCompleted ? -2.0 : 2.0);
   }
 
   double get _backdropHeight {
@@ -294,23 +289,24 @@ class _BackdropDemoState extends State<BackdropDemo> with SingleTickerProviderSt
   // the user must either tap its heading or the backdrop's menu icon.
 
   void _handleDragUpdate(DragUpdateDetails details) {
-    if (_controller.isAnimating || _controller.status == AnimationStatus.completed)
+    if (!_controller.isDismissed) {
       return;
+    }
 
     _controller.value -= details.primaryDelta! / _backdropHeight;
   }
 
   void _handleDragEnd(DragEndDetails details) {
-    if (_controller.isAnimating || _controller.status == AnimationStatus.completed)
+    if (!_controller.isDismissed) {
       return;
+    }
 
     final double flingVelocity = details.velocity.pixelsPerSecond.dy / _backdropHeight;
-    if (flingVelocity < 0.0)
-      _controller.fling(velocity: math.max(2.0, -flingVelocity));
-    else if (flingVelocity > 0.0)
-      _controller.fling(velocity: math.min(-2.0, -flingVelocity));
-    else
-      _controller.fling(velocity: _controller.value < 0.5 ? -2.0 : 2.0);
+    _controller.fling(velocity: switch (flingVelocity) {
+      < 0.0 => math.max(2.0, -flingVelocity),
+      > 0.0 => math.min(-2.0, -flingVelocity),
+      _ => _controller.value < 0.5 ? -2.0 : 2.0,
+    });
   }
 
   // Stacks a BackdropPanel, which displays the selected category, on top
@@ -355,15 +351,15 @@ class _BackdropDemoState extends State<BackdropDemo> with SingleTickerProviderSt
       );
     }).toList();
 
-    return Container(
+    return ColoredBox(
       key: _backdropKey,
       color: theme.primaryColor,
       child: Stack(
         children: <Widget>[
           ListTileTheme(
             iconColor: theme.primaryIconTheme.color,
-            textColor: theme.primaryTextTheme.headline6!.color!.withOpacity(0.6),
-            selectedColor: theme.primaryTextTheme.headline6!.color,
+            textColor: theme.primaryTextTheme.titleLarge!.color!.withOpacity(0.6),
+            selectedColor: theme.primaryTextTheme.titleLarge!.color,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Column(

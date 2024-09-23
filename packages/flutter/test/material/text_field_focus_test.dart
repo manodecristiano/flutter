@@ -31,6 +31,7 @@ void main() {
     expect(tester.testTextInput.isVisible, isFalse);
 
     final FocusNode focusNode = FocusNode(debugLabel: 'Editable Text Node');
+    addTearDown(focusNode.dispose);
 
     await tester.pumpWidget(
       MaterialApp(
@@ -72,6 +73,7 @@ void main() {
 
   testWidgets('Request focus shows keyboard', (WidgetTester tester) async {
     final FocusNode focusNode = FocusNode();
+    addTearDown(focusNode.dispose);
 
     await tester.pumpWidget(
       MaterialApp(
@@ -160,6 +162,7 @@ void main() {
 
   testWidgets('Focus triggers keep-alive', (WidgetTester tester) async {
     final FocusNode focusNode = FocusNode();
+    addTearDown(focusNode.dispose);
 
     await tester.pumpWidget(
       MaterialApp(
@@ -186,7 +189,7 @@ void main() {
     expect(find.byType(TextField), findsOneWidget);
     expect(tester.testTextInput.isVisible, isTrue);
 
-    await tester.drag(find.byType(ListView), const Offset(0.0, -1000.0));
+    await tester.drag(find.byType(TextField), const Offset(0.0, -1000.0));
     await tester.pump();
     expect(find.byType(TextField, skipOffstage: false), findsOneWidget);
     expect(tester.testTextInput.isVisible, isTrue);
@@ -200,6 +203,7 @@ void main() {
 
   testWidgets('Focus keep-alive works with GlobalKey reparenting', (WidgetTester tester) async {
     final FocusNode focusNode = FocusNode();
+    addTearDown(focusNode.dispose);
 
     Widget makeTest(String? prefix) {
       return MaterialApp(
@@ -225,7 +229,7 @@ void main() {
     FocusScope.of(tester.element(find.byType(TextField))).requestFocus(focusNode);
     await tester.pump();
     expect(find.byType(TextField), findsOneWidget);
-    await tester.drag(find.byType(ListView), const Offset(0.0, -1000.0));
+    await tester.drag(find.byType(TextField), const Offset(0.0, -1000.0));
     await tester.pump();
     expect(find.byType(TextField, skipOffstage: false), findsOneWidget);
     await tester.pumpWidget(makeTest('test'));
@@ -258,7 +262,10 @@ void main() {
     expect(tester.testTextInput.isVisible, isFalse);
 
     final FocusScopeNode focusScopeNode0 = FocusScopeNode();
+    addTearDown(focusScopeNode0.dispose);
     final FocusScopeNode focusScopeNode1 = FocusScopeNode();
+    addTearDown(focusScopeNode1.dispose);
+
     final Key textField0 = UniqueKey();
     final Key textField1 = UniqueKey();
 
@@ -397,7 +404,10 @@ void main() {
 
   testWidgets('A Focused text-field will lose focus when clicking outside of its hitbox with a mouse on desktop', (WidgetTester tester) async {
     final FocusNode focusNodeA = FocusNode();
+    addTearDown(focusNodeA.dispose);
     final FocusNode focusNodeB = FocusNode();
+    addTearDown(focusNodeB.dispose);
+
     final Key key = UniqueKey();
 
     await tester.pumpWidget(
@@ -454,6 +464,7 @@ void main() {
 
   testWidgets('A Focused text-field will not lose focus when clicking on its decoration', (WidgetTester tester) async {
     final FocusNode focusNodeA = FocusNode();
+    addTearDown(focusNodeA.dispose);
     final Key iconKey = UniqueKey();
 
     await tester.pumpWidget(
@@ -490,8 +501,11 @@ void main() {
   }, variant: TargetPlatformVariant.desktop());
 
   testWidgets('A Focused text-field will lose focus when clicking outside of its hitbox with a mouse on desktop after tab navigation', (WidgetTester tester) async {
-    final FocusNode focusNodeA = FocusNode();
-    final FocusNode focusNodeB = FocusNode();
+    final FocusNode focusNodeA = FocusNode(debugLabel: 'A');
+    addTearDown(focusNodeA.dispose);
+    final FocusNode focusNodeB = FocusNode(debugLabel: 'B');
+    addTearDown(focusNodeB.dispose);
+
     final Key key = UniqueKey();
 
     await tester.pumpWidget(
@@ -518,30 +532,33 @@ void main() {
     );
     // Tab over to the 3rd text field.
     for (int i = 0; i < 3; i += 1) {
-      await tester.sendKeyDownEvent(LogicalKeyboardKey.tab);
-      await tester.sendKeyUpEvent(LogicalKeyboardKey.tab);
+      await tester.sendKeyEvent(LogicalKeyboardKey.tab);
+      await tester.pump();
+    }
+
+    Future<void> click(Finder finder) async {
+      final TestGesture gesture = await tester.startGesture(
+        tester.getCenter(finder),
+        kind: PointerDeviceKind.mouse,
+      );
+      await gesture.up();
+      await gesture.removePointer();
     }
 
     expect(focusNodeA.hasFocus, true);
     expect(focusNodeB.hasFocus, false);
 
     // Click on the container to not hit either text field.
-    final TestGesture down2 = await tester.startGesture(tester.getCenter(find.byKey(key)), kind: PointerDeviceKind.mouse);
+    await click(find.byKey(key));
     await tester.pump();
-    await tester.pumpAndSettle();
-    await down2.up();
-    await down2.removePointer();
 
     expect(focusNodeA.hasFocus, false);
     expect(focusNodeB.hasFocus, false);
 
     // Second text field can still gain focus.
 
-    final TestGesture down3 = await tester.startGesture(tester.getCenter(find.byType(TextField).last), kind: PointerDeviceKind.mouse);
+    await click(find.byType(TextField).last);
     await tester.pump();
-    await tester.pumpAndSettle();
-    await down3.up();
-    await down3.removePointer();
 
     expect(focusNodeA.hasFocus, false);
     expect(focusNodeB.hasFocus, true);
