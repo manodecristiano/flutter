@@ -4,7 +4,10 @@
 
 import 'dart:convert' show jsonDecode;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import 'dart:ui' as ui;
+=======
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 =======
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 
@@ -658,7 +661,10 @@ void main() {
   });
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
   testWidgets('insertContent does not throw and parses data correctly', (WidgetTester tester) async {
     String? latestUri;
     await tester.pumpWidget(
@@ -715,6 +721,9 @@ void main() {
     expect(latestUri, equals(uri));
   });
 
+<<<<<<< HEAD
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
+=======
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
   testWidgets('onAppPrivateCommand does not throw', (WidgetTester tester) async {
     await tester.pumpWidget(
@@ -753,7 +762,11 @@ void main() {
     Object? error;
     try {
 <<<<<<< HEAD
+<<<<<<< HEAD
       await ServicesBinding.instance.defaultBinaryMessenger.handlePlatformMessage(
+=======
+      await tester.binding.defaultBinaryMessenger.handlePlatformMessage(
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 =======
       await tester.binding.defaultBinaryMessenger.handlePlatformMessage(
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730

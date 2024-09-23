@@ -107,8 +107,11 @@ class RenderAndroidView extends PlatformViewRenderBox {
   set controller(AndroidViewController controller) {
     assert(!_isDisposed);
 <<<<<<< HEAD
+<<<<<<< HEAD
     assert(_viewController != null);
     assert(controller != null);
+=======
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 =======
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
     if (_viewController == controller) {

@@ -351,8 +351,11 @@ class MDnsVmServiceDiscovery {
   }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   Future<Uri?> getObservatoryUri(String? applicationId, Device device, {
 =======
+=======
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
   @visibleForTesting
   bool deviceNameMatchesTargetName(String deviceName, String targetName) {
     // Remove `.local` from the name along with any non-word, non-digit characters.
@@ -391,6 +394,9 @@ class MDnsVmServiceDiscovery {
   Future<Uri?> getVMServiceUriForAttach(
     String? applicationId,
     Device device, {
+<<<<<<< HEAD
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
+=======
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
     bool usesIpv6 = false,
     int? hostVmservicePort,

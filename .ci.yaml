@@ -459,7 +459,11 @@ targets:
 
   - name: Linux docs_publish
 <<<<<<< HEAD
+<<<<<<< HEAD
     recipe: flutter/flutter
+=======
+    recipe: flutter/docs
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 =======
     recipe: flutter/docs
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730

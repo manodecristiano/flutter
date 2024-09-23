@@ -219,11 +219,17 @@ abstract class EdgeInsetsGeometry {
   ///
   /// {@macro dart.ui.shadow.lerp}
 <<<<<<< HEAD
+<<<<<<< HEAD
   static EdgeInsetsGeometry? lerp(
       EdgeInsetsGeometry? a, EdgeInsetsGeometry? b, double t) {
     assert(t != null);
     if (a == null && b == null) {
       return null;
+=======
+  static EdgeInsetsGeometry? lerp(EdgeInsetsGeometry? a, EdgeInsetsGeometry? b, double t) {
+    if (identical(a, b)) {
+      return a;
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 =======
   static EdgeInsetsGeometry? lerp(EdgeInsetsGeometry? a, EdgeInsetsGeometry? b, double t) {
     if (identical(a, b)) {
@@ -416,6 +422,7 @@ class EdgeInsets extends EdgeInsetsGeometry {
   /// using the value from a [FlutterView] directly, so that you get notified of
   /// changes.
 <<<<<<< HEAD
+<<<<<<< HEAD
   EdgeInsets.fromWindowPadding(
       ui.WindowPadding padding, double devicePixelRatio)
       : left = padding.left / devicePixelRatio,
@@ -423,12 +430,23 @@ class EdgeInsets extends EdgeInsetsGeometry {
         right = padding.right / devicePixelRatio,
         bottom = padding.bottom / devicePixelRatio;
 =======
+=======
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
   EdgeInsets.fromViewPadding(ui.ViewPadding padding, double devicePixelRatio)
     : left = padding.left / devicePixelRatio,
       top = padding.top / devicePixelRatio,
       right = padding.right / devicePixelRatio,
       bottom = padding.bottom / devicePixelRatio;
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
+
+  /// Deprecated. Will be removed in a future version of Flutter.
+  ///
+  /// Use [EdgeInsets.fromViewPadding] instead.
+  @Deprecated(
+    'Use EdgeInsets.fromViewPadding instead. '
+    'This feature was deprecated after v3.8.0-14.0.pre.',
+  )
+  factory EdgeInsets.fromWindowPadding(ui.ViewPadding padding, double devicePixelRatio) = EdgeInsets.fromViewPadding;
 
   /// Deprecated. Will be removed in a future version of Flutter.
   ///
@@ -903,11 +921,17 @@ class EdgeInsetsDirectional extends EdgeInsetsGeometry {
   ///
   /// {@macro dart.ui.shadow.lerp}
 <<<<<<< HEAD
+<<<<<<< HEAD
   static EdgeInsetsDirectional? lerp(
       EdgeInsetsDirectional? a, EdgeInsetsDirectional? b, double t) {
     assert(t != null);
     if (a == null && b == null) {
       return null;
+=======
+  static EdgeInsetsDirectional? lerp(EdgeInsetsDirectional? a, EdgeInsetsDirectional? b, double t) {
+    if (identical(a, b)) {
+      return a;
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 =======
   static EdgeInsetsDirectional? lerp(EdgeInsetsDirectional? a, EdgeInsetsDirectional? b, double t) {
     if (identical(a, b)) {
@@ -1050,6 +1074,7 @@ class _MixedEdgeInsets extends EdgeInsetsGeometry {
   EdgeInsets resolve(TextDirection? direction) {
     assert(direction != null);
 <<<<<<< HEAD
+<<<<<<< HEAD
     switch (direction!) {
       case TextDirection.rtl:
         return EdgeInsets.fromLTRB(
@@ -1059,10 +1084,15 @@ class _MixedEdgeInsets extends EdgeInsetsGeometry {
             _start + _left, _top, _end + _right, _bottom);
     }
 =======
+=======
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
     return switch (direction!) {
       TextDirection.rtl => EdgeInsets.fromLTRB(_end + _left, _top, _start + _right, _bottom),
       TextDirection.ltr => EdgeInsets.fromLTRB(_start + _left, _top, _end + _right, _bottom),
     };
+<<<<<<< HEAD
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
+=======
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
   }
 }

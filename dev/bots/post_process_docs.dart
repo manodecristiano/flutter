@@ -13,9 +13,12 @@ import 'package:platform/platform.dart' as platform;
 import 'package:process/process.dart';
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 const String kDocsRoot = 'dev/docs';
 const String kPublishRoot = '$kDocsRoot/doc';
 
+=======
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 =======
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 class CommandException implements Exception {}
@@ -69,7 +72,11 @@ Future<void> postProcess() async {
   final String version = versionFile.readAsStringSync();
   // Recreate footer
 <<<<<<< HEAD
+<<<<<<< HEAD
   final String publishPath = path.join(docsPath, 'doc', 'api', 'footer.js');
+=======
+  final String publishPath = path.join(docsPath, '..', 'docs', 'doc', 'flutter', 'footer.js');
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 =======
   final String publishPath = path.join(docsPath, '..', 'docs', 'doc', 'flutter', 'footer.js');
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
@@ -105,6 +112,10 @@ Future<void> runProcessWithValidations(
   String workingDirectory, {
   @visibleForTesting ProcessManager processManager = const LocalProcessManager(),
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  bool verbose = true,
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 =======
   bool verbose = true,
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
@@ -113,10 +124,13 @@ Future<void> runProcessWithValidations(
       processManager.runSync(command, stdoutEncoding: utf8, workingDirectory: workingDirectory);
   if (result.exitCode == 0) {
 <<<<<<< HEAD
+<<<<<<< HEAD
     print('Stdout: ${result.stdout}');
   } else {
     print('StdErr: ${result.stderr}');
 =======
+=======
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
     if (verbose) {
       print('stdout: ${result.stdout}');
     }
@@ -124,6 +138,9 @@ Future<void> runProcessWithValidations(
     if (verbose) {
       print('stderr: ${result.stderr}');
     }
+<<<<<<< HEAD
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
+=======
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
     throw CommandException();
   }

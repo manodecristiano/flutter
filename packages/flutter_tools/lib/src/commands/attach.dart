@@ -258,16 +258,22 @@ known, it can be explicitly provided to attach via the command-line, e.g.
 
     final Device? device = await findTargetDevice();
 <<<<<<< HEAD
-
-    if (device == null) {
-      throwToolExit('Did not find any valid target devices.');
-    }
+<<<<<<< HEAD
 =======
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 
     if (device == null) {
       throwToolExit('Did not find any valid target devices.');
     }
+<<<<<<< HEAD
+=======
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
+
+    if (device == null) {
+      throwToolExit('Did not find any valid target devices.');
+    }
+=======
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 
     await _attachToDevice(device);
 
@@ -322,6 +328,7 @@ known, it can be explicitly provided to attach via the command-line, e.g.
               "If you don't see your app in the Settings, uninstall the app and rerun to see the prompt again.\n";
           }
 <<<<<<< HEAD
+<<<<<<< HEAD
           rethrow;
         }
       } else if ((device is IOSDevice) || (device is IOSSimulator) || (device is MacOSDesignedForIPadDevice)) {
@@ -355,6 +362,8 @@ known, it can be explicitly provided to attach via the command-line, e.g.
         usesIpv6 = observatoryDiscovery.ipv6;
       }
 =======
+=======
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 
           return 'The Dart VM Service was not discovered after 30 seconds. This is taking much longer than expected...\n';
         },
@@ -367,6 +376,9 @@ known, it can be explicitly provided to attach via the command-line, e.g.
         discoveryStatus.stop();
         return uri;
       });
+<<<<<<< HEAD
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
+=======
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
     } else {
       vmServiceUri = Stream<Uri>
@@ -388,10 +400,18 @@ known, it can be explicitly provided to attach via the command-line, e.g.
       if (daemon != null) {
         final ResidentRunner runner = await createResidentRunner(
 <<<<<<< HEAD
+<<<<<<< HEAD
           observatoryUris: observatoryUri,
           device: device,
           flutterProject: flutterProject,
           usesIpv6: usesIpv6,
+=======
+          vmServiceUris: vmServiceUri,
+          device: device,
+          flutterProject: flutterProject,
+          usesIpv6: usesIpv6,
+          nativeAssetsBuilder: _nativeAssetsBuilder,
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 =======
           vmServiceUris: vmServiceUri,
           device: device,
@@ -429,10 +449,18 @@ known, it can be explicitly provided to attach via the command-line, e.g.
       while (true) {
         final ResidentRunner runner = await createResidentRunner(
 <<<<<<< HEAD
+<<<<<<< HEAD
           observatoryUris: observatoryUri,
           device: device,
           flutterProject: flutterProject,
           usesIpv6: usesIpv6,
+=======
+          vmServiceUris: vmServiceUri,
+          device: device,
+          flutterProject: flutterProject,
+          usesIpv6: usesIpv6,
+          nativeAssetsBuilder: _nativeAssetsBuilder,
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 =======
           vmServiceUris: vmServiceUri,
           device: device,
@@ -494,7 +522,11 @@ known, it can be explicitly provided to attach via the command-line, e.g.
 
   Future<ResidentRunner> createResidentRunner({
 <<<<<<< HEAD
+<<<<<<< HEAD
     required Stream<Uri> observatoryUris,
+=======
+    required Stream<Uri> vmServiceUris,
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 =======
     required Stream<Uri> vmServiceUris,
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730

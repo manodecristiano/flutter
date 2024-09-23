@@ -46,13 +46,19 @@ class FakePlatformViewController extends PlatformViewController {
 
 class FakeAndroidViewController implements AndroidViewController {
 <<<<<<< HEAD
+<<<<<<< HEAD
   FakeAndroidViewController(this.viewId, {this.requiresSize = false});
 =======
+=======
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
   FakeAndroidViewController(
     this.viewId, {
     this.requiresSize = false,
     this.requiresViewComposition = false,
   });
+<<<<<<< HEAD
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
+=======
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 
   bool disposed = false;
@@ -64,11 +70,17 @@ class FakeAndroidViewController implements AndroidViewController {
 
   bool _createCalledSuccessfully = false;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 
   Offset? createPosition;
 
   final List<PlatformViewCreatedCallback> _createdCallbacks = <PlatformViewCreatedCallback>[];
+<<<<<<< HEAD
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
+=======
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 
   /// Events that are dispatched.
@@ -145,7 +157,11 @@ class FakeAndroidViewController implements AndroidViewController {
 
   @override
 <<<<<<< HEAD
+<<<<<<< HEAD
   Future<void> create({Size? size}) async {
+=======
+  Future<void> create({Size? size, Offset? position}) async {
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 =======
   Future<void> create({Size? size, Offset? position}) async {
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
@@ -154,7 +170,12 @@ class FakeAndroidViewController implements AndroidViewController {
       assert(!size.isEmpty);
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
     _createCalledSuccessfully = size != null || !requiresSize;
+=======
+    _createCalledSuccessfully = size != null && position != null || !requiresSize;
+    createPosition = position;
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 =======
     _createCalledSuccessfully = size != null && position != null || !requiresSize;
     createPosition = position;

@@ -80,9 +80,12 @@ def flutter_additional_ios_build_settings(target)
     end
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     # Skip other updates if it's not a Flutter plugin (transitive dependency).
     next unless target.dependencies.any? { |dependency| dependency.name == 'Flutter' }
 =======
+=======
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
     # ARC code targeting iOS 8 does not build on Xcode 14.3. Force to at least iOS 9.
     build_configuration.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '9.0' if force_to_arc_supported_min
 
@@ -91,6 +94,9 @@ def flutter_additional_ios_build_settings(target)
 
     # Bitcode is deprecated, Flutter.framework bitcode blob will have been stripped.
     build_configuration.build_settings['ENABLE_BITCODE'] = 'NO'
+<<<<<<< HEAD
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
+=======
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 
     # Profile can't be derived from the CocoaPods build configuration. Use release framework (for linking only).
@@ -351,6 +357,7 @@ end
 # .flutter-plugins-dependencies format documented at
 # https://flutter.dev/go/plugins-list-migration
 <<<<<<< HEAD
+<<<<<<< HEAD
 def flutter_parse_plugins_file(file, platform)
   file_path = File.expand_path(file)
   return [] unless File.exist? file_path
@@ -358,6 +365,9 @@ def flutter_parse_plugins_file(file, platform)
   dependencies_file = File.read(file)
   dependencies_hash = JSON.parse(dependencies_file)
 
+=======
+def flutter_get_plugins_list(dependencies_hash, platform)
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 =======
 def flutter_get_plugins_list(dependencies_hash, platform)
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730

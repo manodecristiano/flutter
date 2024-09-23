@@ -3300,13 +3300,19 @@ class EditableTextState extends State<EditableText> with AutomaticKeepAliveClien
   void performPrivateCommand(String action, Map<String, dynamic> data) {
     widget.onAppPrivateCommand?.call(action, data);
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
   }
 
   @override
   void insertContent(KeyboardInsertedContent content) {
     assert(widget.contentInsertionConfiguration?.allowedMimeTypes.contains(content.mimeType) ?? false);
     widget.contentInsertionConfiguration?.onContentInserted.call(content);
+<<<<<<< HEAD
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
+=======
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
   }
 

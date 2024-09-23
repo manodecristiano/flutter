@@ -1219,7 +1219,11 @@ void log(logging.LogRecord event) {
     globals.printError('${event.loggerName}: ${event.message}$error', stackTrace: event.stackTrace);
   } else if (event.level == logging.Level.WARNING) {
 <<<<<<< HEAD
+<<<<<<< HEAD
     // Note: Temporary fix for https://github.com/flutter/flutter/issues/109792
+=======
+    // Temporary fix for https://github.com/flutter/flutter/issues/109792
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 =======
     // Temporary fix for https://github.com/flutter/flutter/issues/109792
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730

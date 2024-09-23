@@ -6,15 +6,21 @@ environment:
 
 dependencies:
 <<<<<<< HEAD
+<<<<<<< HEAD
   args: 2.3.1
   crypto: 3.0.2
   intl: 0.17.0
 =======
+=======
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
   analyzer: 6.7.0
   args: 2.5.0
   crypto: 3.0.3
   intl: 0.19.0
   file: 7.0.0
+<<<<<<< HEAD
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
+=======
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
   flutter_devicelab:
     path: ../devicelab
@@ -82,7 +88,11 @@ dev_dependencies:
   test_api: 0.7.2
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 # PUBSPEC CHECKSUM: d1d2
+=======
+# PUBSPEC CHECKSUM: ab12
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 =======
 # PUBSPEC CHECKSUM: ab12
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730

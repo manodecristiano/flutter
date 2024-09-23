@@ -188,6 +188,7 @@ void main() {
         // This is not a valid Xml document
         const String invalidManifest = '<manifest></application>';
 <<<<<<< HEAD
+<<<<<<< HEAD
         final FlutterProject project = await someProject(androidManifestOverride: invalidManifest);
 
         expect(
@@ -200,6 +201,9 @@ void main() {
         // The default someProject with an empty <manifest> already indicates
         // v1 embedding, as opposed to having <meta-data
         // android:name="flutterEmbedding" android:value="2" />.
+=======
+        final FlutterProject project = await someProject(androidManifestOverride: invalidManifest, includePubspec: true);
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 =======
         final FlutterProject project = await someProject(androidManifestOverride: invalidManifest, includePubspec: true);
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
@@ -1541,7 +1545,12 @@ plugins {
 
 Future<FlutterProject> someProject({
 <<<<<<< HEAD
+<<<<<<< HEAD
   String androidManifestOverride,
+=======
+  String? androidManifestOverride,
+  bool includePubspec = false,
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 =======
   String? androidManifestOverride,
   bool includePubspec = false,

@@ -79,6 +79,7 @@ void main() {
       platform: globals.platform,
       stdio: globals.stdio,
     ),
+<<<<<<< HEAD
   });
 
 <<<<<<< HEAD
@@ -151,6 +152,56 @@ void main() {
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
   });
 
+=======
+  });
+
+  testUsingContext('generated plugin registrant passes analysis with null safety', () async {
+    await _createProject(projectDir, <String>[]);
+    // We need a dependency so the plugin registrant is not completely empty.
+    await _editPubspecFile(projectDir,
+      _composeEditors(<PubspecEditor>[
+        _addDependencyEditor('shared_preferences', version: '^2.0.0'),
+
+        _setDartSDKVersionEditor('>=2.12.0 <4.0.0'),
+      ]));
+
+    // Replace main file with a no-op dummy. We aren't testing it in this scenario anyway.
+    await _replaceMainFile(projectDir, 'void main() {}');
+
+    // The plugin registrant is created on build...
+    await _buildWebProject(projectDir);
+
+    // Find the web_plugin_registrant, now that it lives outside "lib":
+    final Directory buildDir = projectDir
+        .childDirectory('.dart_tool/flutter_build')
+        .listSync()
+        .firstWhere((FileSystemEntity entity) => entity is Directory) as Directory;
+
+    // Ensure the file exists, and passes analysis.
+    final File registrant = buildDir.childFile('web_plugin_registrant.dart');
+    expect(registrant, exists);
+    await _analyzeEntity(registrant);
+
+    // Ensure the contents match what we expect for a non-empty plugin registrant.
+    final String contents = registrant.readAsStringSync();
+    expect(contents, contains('// @dart = 2.13'));
+    expect(contents, contains("import 'package:shared_preferences_web/shared_preferences_web.dart';"));
+    expect(contents, contains('void registerPlugins([final Registrar? pluginRegistrar]) {'));
+    expect(contents, contains('SharedPreferencesPlugin.registerWith(registrar);'));
+    expect(contents, contains('registrar.registerMessageHandler();'));
+  }, overrides: <Type, Generator>{
+    Pub: () => Pub.test(
+      fileSystem: globals.fs,
+      logger: globals.logger,
+      processManager: globals.processManager,
+      usage: globals.flutterUsage,
+      botDetector: globals.botDetector,
+      platform: globals.platform,
+      stdio: globals.stdio,
+    ),
+  });
+
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 
   testUsingContext('(no-op) generated plugin registrant passes analysis', () async {
     await _createProject(projectDir, <String>[]);
@@ -383,17 +434,23 @@ PubspecEditor _setDartSDKVersionEditor(String version) {
           final String innerLine = lines[i];
           final String sdkLine = "  sdk: '$version'";
 <<<<<<< HEAD
+<<<<<<< HEAD
           if(innerLine.isNotEmpty && !innerLine.startsWith('  ')) {
             lines.insert(i, sdkLine);
             break;
           }
           if(innerLine.startsWith('  sdk:')) {
 =======
+=======
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
           if (innerLine.isNotEmpty && !innerLine.startsWith('  ')) {
             lines.insert(i, sdkLine);
             break;
           }
           if (innerLine.startsWith('  sdk:')) {
+<<<<<<< HEAD
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
+=======
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
             lines[i] = sdkLine;
             break;

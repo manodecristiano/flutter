@@ -895,6 +895,12 @@ class RenderOpacity extends RenderProxyBox {
   @override
   bool get alwaysNeedsCompositing => child != null && _alpha > 0;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+  @override
+  bool get isRepaintBoundary => alwaysNeedsCompositing;
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 =======
 
   @override
@@ -954,6 +960,7 @@ class RenderOpacity extends RenderProxyBox {
 
   @override
 <<<<<<< HEAD
+<<<<<<< HEAD
   void paint(PaintingContext context, Offset offset) {
     if (child == null) {
       return;
@@ -964,11 +971,16 @@ class RenderOpacity extends RenderProxyBox {
       return;
     }
 =======
+=======
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
   OffsetLayer updateCompositedLayer({required covariant OpacityLayer? oldLayer}) {
     final OpacityLayer layer = oldLayer ?? OpacityLayer();
     layer.alpha = _alpha;
     return layer;
   }
+<<<<<<< HEAD
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
+=======
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 
   @override

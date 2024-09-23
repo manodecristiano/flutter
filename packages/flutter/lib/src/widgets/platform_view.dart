@@ -1203,9 +1203,15 @@ class _PlatformViewLinkState extends State<PlatformViewLink> {
       // Depending on the implementation, the first non-empty size can be used
       // to size the platform view.
 <<<<<<< HEAD
+<<<<<<< HEAD
       return _PlatformViewPlaceHolder(onLayout: (Size size) {
         if (controller.awaitingCreation && !size.isEmpty) {
           controller.create(size: size);
+=======
+      return _PlatformViewPlaceHolder(onLayout: (Size size, Offset position) {
+        if (controller.awaitingCreation && !size.isEmpty) {
+          controller.create(size: size, position: position);
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 =======
       return _PlatformViewPlaceHolder(onLayout: (Size size, Offset position) {
         if (controller.awaitingCreation && !size.isEmpty) {

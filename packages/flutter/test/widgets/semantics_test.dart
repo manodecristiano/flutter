@@ -1658,7 +1658,11 @@ void main() {
     // a zero transform because it does not actually draw its children.
     // Assert that this subtree gets dropped (the root node has no children).
 <<<<<<< HEAD
+<<<<<<< HEAD
     await tester.pumpWidget(Column(
+=======
+    await tester.pumpWidget(const Column(
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 =======
     await tester.pumpWidget(const Column(
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
@@ -1683,7 +1687,10 @@ void main() {
     expect(node.childrenCount, 0);
   });
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 
   testWidgets('blocking user interaction works on explicit child node.', (WidgetTester tester) async {
     final UniqueKey key1 = UniqueKey();
@@ -1796,6 +1803,9 @@ void main() {
       ),
     );
   });
+<<<<<<< HEAD
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
+=======
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 }
 

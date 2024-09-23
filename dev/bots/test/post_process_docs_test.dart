@@ -119,7 +119,11 @@ void main() async {
         ],
       );
 <<<<<<< HEAD
+<<<<<<< HEAD
       await runProcessWithValidations(command, '', processManager: processManager);
+=======
+      await runProcessWithValidations(command, '', processManager: processManager, verbose: false);
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 =======
       await runProcessWithValidations(command, '', processManager: processManager, verbose: false);
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
@@ -138,7 +142,11 @@ void main() async {
       );
       try {
 <<<<<<< HEAD
+<<<<<<< HEAD
         await runProcessWithValidations(command, '', processManager: processManager);
+=======
+        await runProcessWithValidations(command, '', processManager: processManager, verbose: false);
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 =======
         await runProcessWithValidations(command, '', processManager: processManager, verbose: false);
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730

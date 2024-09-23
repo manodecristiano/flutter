@@ -361,6 +361,7 @@ class PlatformAssetBundle extends CachingAssetBundle {
     if (debugUsePlatformChannel) {
       final ByteData bytes = await load(key);
       return ui.ImmutableBuffer.fromUint8List(Uint8List.sublistView(bytes));
+<<<<<<< HEAD
     }
     bool debugUsePlatformChannel = false;
     assert(() {
@@ -377,6 +378,8 @@ class PlatformAssetBundle extends CachingAssetBundle {
     if (debugUsePlatformChannel) {
       final ByteData bytes = await load(key);
       return ui.ImmutableBuffer.fromUint8List(bytes.buffer.asUint8List());
+=======
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
     }
     try {
       return await ui.ImmutableBuffer.fromAsset(key);

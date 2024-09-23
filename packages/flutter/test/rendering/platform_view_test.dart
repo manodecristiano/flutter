@@ -260,7 +260,10 @@ void main() {
     });
   });
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 
   test('markNeedsPaint does not get called when setting the same viewController', () {
     FakeAsync().run((FakeAsync async) {
@@ -297,6 +300,9 @@ void main() {
       expect(futureCallbackRan, true);
     });
   });
+<<<<<<< HEAD
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
+=======
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 }
 

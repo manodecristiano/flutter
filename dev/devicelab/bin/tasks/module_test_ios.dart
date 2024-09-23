@@ -28,8 +28,13 @@ Future<void> main() async {
     );
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     // this variable cannot be `late`, as we reference it in the `finally` block
     // which may execute before this field has been initialized
+=======
+    // This variable cannot be `late`, as we reference it in the `finally` block
+    // which may execute before this field has been initialized.
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 =======
     // This variable cannot be `late`, as we reference it in the `finally` block
     // which may execute before this field has been initialized.
@@ -199,7 +204,11 @@ dependencies:
 
       content = content.replaceFirst(
 <<<<<<< HEAD
+<<<<<<< HEAD
         '\ndependencies:\n',
+=======
+        'dependencies:\n',
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 =======
         'dependencies:\n',
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
@@ -208,7 +217,11 @@ dependencies:
 dependencies:
   url_launcher: 6.0.20
 <<<<<<< HEAD
+<<<<<<< HEAD
   android_alarm_manager: 0.4.5+11
+=======
+  android_alarm_manager: 2.0.2
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 =======
   android_alarm_manager: 2.0.2
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730

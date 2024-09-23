@@ -544,6 +544,7 @@ Future<void> _flutterBuildDart2js(String relativePathToApplication, String targe
   );
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 Future<void> _runAddToAppLifeCycleTests() async {
   if (Platform.isMacOS) {
@@ -1855,5 +1856,7 @@ Future<void> _runFromList(Map<String, ShardRunner> items, String key, String nam
     await items[item]!();
   }
 }
+=======
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
 =======
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730

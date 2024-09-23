@@ -104,10 +104,13 @@ class _DefaultDoctorValidatorsProvider implements DoctorValidatorsProvider {
   );
 
   late final CustomDeviceWorkflow customDeviceWorkflow = CustomDeviceWorkflow(
+<<<<<<< HEAD
     featureFlags: featureFlags,
   );
 
   late final CustomDeviceWorkflow customDeviceWorkflow = CustomDeviceWorkflow(
+=======
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
     featureFlags: featureFlags,
   );
 
@@ -201,6 +204,7 @@ class _DefaultDoctorValidatorsProvider implements DoctorValidatorsProvider {
   @override
   List<Workflow> get workflows {
 <<<<<<< HEAD
+<<<<<<< HEAD
     if (_workflows == null) {
       _workflows = <Workflow>[];
 
@@ -238,6 +242,8 @@ class _DefaultDoctorValidatorsProvider implements DoctorValidatorsProvider {
     }
     return _workflows!;
 =======
+=======
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
     return _workflows ??= <Workflow>[
       if (globals.iosWorkflow!.appliesToHostPlatform)      globals.iosWorkflow!,
       if (androidWorkflow?.appliesToHostPlatform ?? false) androidWorkflow!,
@@ -248,6 +254,9 @@ class _DefaultDoctorValidatorsProvider implements DoctorValidatorsProvider {
       if (webWorkflow.appliesToHostPlatform)               webWorkflow,
       if (customDeviceWorkflow.appliesToHostPlatform)      customDeviceWorkflow,
     ];
+<<<<<<< HEAD
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
+=======
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
   }
 }

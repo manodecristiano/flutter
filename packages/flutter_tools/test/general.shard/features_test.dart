@@ -395,7 +395,10 @@ void main() {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
     test('${nativeAssets.name} availability and default enabled', () {
       expect(nativeAssets.master.enabledByDefault, false);
       expect(nativeAssets.master.available, true);
@@ -413,6 +416,9 @@ void main() {
       expect(swiftPackageManager.stable.enabledByDefault, false);
       expect(swiftPackageManager.stable.available, false);
     });
+<<<<<<< HEAD
+>>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
+=======
 >>>>>>> 2663184aa79047d0a33a14a3b607954f8fdd8730
   });
 }
